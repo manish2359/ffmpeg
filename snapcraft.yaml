@@ -1,0 +1,69 @@
+name: ffmpeg
+version: 0.1
+summary: HDMI Test via ffmpeg 
+description: Checking HDMI through video streaming using ffmpeg 
+grade: devel
+confinement: devmode
+
+apps:
+  ffmpeg:
+    command: usr/local/bin/ffmpeg
+    plugs: [home, opengl, framebuffer, process-control]
+
+  ffplay:
+    command: usr/local/bin/ffplay
+    plugs: [pulseaudio, x11, process-control, alsa, network, opengl, framebuffer]
+
+parts:
+  ffmpeg:
+    source: git://source.ffmpeg.org/ffmpeg.git
+    source-tag: n2.8.14
+    plugin: autotools
+    configflags:
+      - --disable-ffprobe
+      - --enable-gpl
+      - --enable-libass
+      - --enable-libfreetype
+      - --enable-libmp3lame
+      - --enable-libopus
+      - --enable-libtheora
+      - --enable-libvorbis
+      - --enable-libvpx
+      - --enable-libx264
+      - --enable-libx265
+      - --enable-nonfree
+      - --enable-opengl
+    build-packages:
+      - autoconf
+      - automake
+      - build-essential
+      - cmake
+      - g++
+      - git
+      - libass-dev
+      - libfreetype6-dev
+      - libmp3lame-dev
+      - libopus-dev
+      - libsdl1.2-dev
+      - libtheora-dev
+      - libtool
+      - libva-dev
+      - libvdpau-dev
+      - libvorbis-dev
+      - libvpx-dev
+      - libx264-dev
+      - libx265-dev
+      - libxcb-shm0-dev
+      - libxcb-xfixes0-dev
+      - libxcb1-dev
+      - make
+      - pkg-config
+      - texinfo
+      - yasm
+      - zlib1g-dev
+      - libsdl2-dev
+
+  ffmpeg-launcher:
+    plugin: dump
+    source: .
+    after: [ffmpeg]
